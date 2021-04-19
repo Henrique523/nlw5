@@ -22,7 +22,7 @@ export function Welcome() {
         Nós cuidamos de lembrar você sempre que precisar.
       </Text>
       
-      <Button title="Avançar" />
+      <Button title=">" />
     </SafeAreaView>
   )
 }
