@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Platform, View } from 'react-native'
+import { Platform, View, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 
 import { 
@@ -42,32 +42,34 @@ export const UserIdentification: React.FC = () => {
   return (
     <SafeAreaContainer>
       <KeyBoardHelper behavior={Platform.OS === 'ios'? 'padding' : 'height'}>
-        <SafeAreaContent>
-          <Form>
-            <Emoji>
-              {isFilled ? '😆' : '😀'}
-            </Emoji>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <SafeAreaContent>
+            <Form>
+              <Emoji>
+                {isFilled ? '😆' : '😀'}
+              </Emoji>
 
-            <FormInputDescription>
-              Como podemos chamar você?
-            </FormInputDescription>
+              <FormInputDescription>
+                Como podemos chamar você?
+              </FormInputDescription>
 
-            <UsernameTextInput 
-              placeholder="Digite um nome" 
-              placeholderTextColor={isFocused ? colors.green : "#ADB3AF"}
-              focused={isFocused}
-              filled={isFilled}
-              onBlur={handleInputBlur}
-              onFocus={handleInputFocus}
-              onChangeText={handleInputChange}
-            />
+              <UsernameTextInput 
+                placeholder="Digite um nome" 
+                placeholderTextColor={isFocused ? colors.green : "#ADB3AF"}
+                focused={isFocused}
+                filled={isFilled}
+                onBlur={handleInputBlur}
+                onFocus={handleInputFocus}
+                onChangeText={handleInputChange}
+              />
 
-            <View style={{ marginTop: 40 }}>
-            <Button text="Confirmar" disabled={!name} onPress={goToConfirmation} />
-            </View>
-            
-          </Form>
-        </SafeAreaContent>
+              <View style={{ marginTop: 40 }}>
+              <Button text="Confirmar" disabled={!name} onPress={goToConfirmation} />
+              </View>
+              
+            </Form>
+          </SafeAreaContent>
+        </TouchableWithoutFeedback>
       </KeyBoardHelper>
     </SafeAreaContainer>
   )
