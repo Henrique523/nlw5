@@ -17,7 +17,7 @@ export const Emoji = styled.Text`
 `
 
 export const Title = styled.Text`
-  font-family: ${fonts.heading};
+  font-family: ${fonts.semiBold};
   font-size: 24px;
   text-align: center;
   line-height: 30px;
@@ -27,7 +27,7 @@ export const Title = styled.Text`
 `
 
 export const ConfirmationText = styled.Text`
-  font-family: ${fonts.text};
+  font-family: ${fonts.regular};
   font-size: 17px;
   text-align: center;
   line-height: 25px;

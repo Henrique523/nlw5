@@ -17,7 +17,7 @@ export const SafeAreaViewContainer = styled.View`
 `
 
 export const Title = styled.Text`
-  font-family: ${fonts.heading};
+  font-family: ${fonts.semiBold};
   font-size: 32px;
   line-height: 38px;
   text-align: center;
@@ -30,7 +30,7 @@ export const Image = styled.Image`
 `
 
 export const Subtitle = styled.Text`
-  font-family: ${fonts.text};
+  font-family: ${fonts.regular};
   font-size: 17px;
   line-height: 25px;
   text-align: center;

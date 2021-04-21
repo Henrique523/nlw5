@@ -15,7 +15,7 @@ export const ButtonContainer = styled.TouchableOpacity`
 `
 
 export const ButtonText = styled.Text`
-  font-family: ${fonts.button};
+  font-family: ${fonts.medium};
   font-size: 17px;
   color: ${colors.white};
   line-height: 23px;

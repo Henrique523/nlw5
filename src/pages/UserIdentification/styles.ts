@@ -40,7 +40,7 @@ export const Emoji = styled.Text`
 `
 
 export const FormInputDescription = styled.Text`
-  font-family: ${fonts.heading};
+  font-family: ${fonts.semiBold};
   font-size: 24px;
   text-align: center;
   color: ${colors.heading};
@@ -58,7 +58,7 @@ export const UsernameTextInput = styled.TextInput<TextInputProps>`
   border-bottom-width: 1px;
   border-color: ${props => (props.focused || props.filled) ? colors.green : colors.gray};
   
-  font-family: ${fonts.text};
+  font-family: ${fonts.regular};
   font-size: 18px;
   text-align: center;
   color: ${colors.heading};
