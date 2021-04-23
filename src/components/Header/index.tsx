@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { HeaderContainer, HeaderTextContainer, RegularHeaderText, BoldHeaderText, HeaderImage } from './styles'
 

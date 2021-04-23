@@ -32,6 +32,7 @@ export const ConfirmationText = styled.Text`
   text-align: center;
   line-height: 25px;
   color: ${colors.body};
+  max-width: 80%;
 
   margin-top: 16px;
 `

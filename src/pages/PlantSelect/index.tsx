@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import { ActivityIndicator } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useNavigation } from '@react-navigation/native'
 
 import { 
   Container,
@@ -20,35 +22,26 @@ import { Load } from '../../components/Load'
 
 import api from '../../services/api'
 import colors from '../../styles/colors'
+import { PlantProps } from '../../libs/storage'
 
 interface PlantEnvironments {
   key: string
   title: string
 }
 
-interface Plants {
-  id: number
-  name: string
-  about: string
-  water_tips: string
-  photo: string
-  environments: string[]
-  frequency: {
-    times: number
-    repeat_every: string
-  }
-}
-
 export const PlantSelect: React.FC = () => {
+  const { navigate } = useNavigation()
+
+  const [plantManagerName, setPlantManagerName] = useState('')
   const [plantEnvironments, setPlantEnvironments] = useState<PlantEnvironments[]>([])
-  const [plants, setPlants] = useState<Plants[]>([])
+  const [plants, setPlants] = useState<PlantProps[]>([])
   const [environmentSelected, setEnvironmentSelected] = useState('all')
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [loadingMore, setLoadingMore] = useState(false)
 
   const fetchPlants = useCallback(async () => {
-    const response = await api.get<Plants[]>(`plants?_sort=name&_order=asc&_page=${page}&_limit=8`)
+    const response = await api.get<PlantProps[]>(`plants?_sort=name&_order=asc&_page=${page}&_limit=8`)
     if (!response.data) {
       setLoading(true)
     }
@@ -83,9 +76,21 @@ export const PlantSelect: React.FC = () => {
     fetchPlants()
   }, [])
 
+  useEffect(() => {
+    ;(async () => {
+      const name = await AsyncStorage.getItem('@plantmanager:user')
+      setPlantManagerName(name || '')
+    })()
+  }, [])
+
   const changeItemSelected = useCallback((newEnvironmentSelected: string) => {
     setEnvironmentSelected(newEnvironmentSelected)
   }, [])
+
+  const goToPlantSave = useCallback(async (plant: PlantProps) => {
+    await AsyncStorage.setItem('@plantmanager:currentPlant', JSON.stringify(plant))
+    navigate('PlantSave')
+  }, [navigate])
 
   const plantsFiltered = useMemo(() => {
     if(environmentSelected === 'all') {
@@ -102,7 +107,7 @@ export const PlantSelect: React.FC = () => {
   return (
     <Container>
       <HeaderSubHeaderContainer>
-        <Header boldText="Guilherme" regularText="Olá," />
+        <Header regularText="Olá," boldText={plantManagerName} />
 
         <MediumPlantSelectText>Em qual ambiente</MediumPlantSelectText>
         <RegularPlantSelectText>você quer colocar sua planta?</RegularPlantSelectText>
@@ -110,7 +115,7 @@ export const PlantSelect: React.FC = () => {
 
       <EnvironmentListContainer>
         <EnvironmentList
-          keyExtractor={(item) => item.key}
+          keyExtractor={(item) => String(item.key)}
           data={plantEnvironments}
           renderItem={({ item }) => (
             <EnvironmentButton 
@@ -127,9 +132,10 @@ export const PlantSelect: React.FC = () => {
 
       <PlantsListContainer>
           <PlantsList
+            keyExtractor={(item) => String(item.id)}
             data={plantsFiltered}
             renderItem={({ item }) => (
-              <PlantCardPrimary data={{ name: item.name, photo: item.photo }} />
+              <PlantCardPrimary data={{ name: item.name, photo: item.photo }} onPress={() => goToPlantSave(item)} />
             )}
             showsVerticalScrollIndicator={false}
             numColumns={2}

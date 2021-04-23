@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
-import { Platform, View, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { Platform, View, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { 
   SafeAreaContainer,
@@ -35,9 +36,20 @@ export const UserIdentification: React.FC = () => {
     setName(value)
   }, [])
 
-  const goToConfirmation = useCallback(() => {
-    navigate('Confirmation', { name })
-  }, [navigate])
+  const goToConfirmation = useCallback(async () => {
+    try {
+      await AsyncStorage.setItem('@plantmanager:user', name)
+      navigate('Confirmation', { 
+        title: 'Prontinho',
+        subTitle: 'Agora vamos começar a cuidar das suas plantinhas com muito cuidado.',
+        buttonTitle: 'Começar',
+        icon: 'smile',
+        nextScreen: 'PlantSelect',
+      })
+    } catch {
+      Alert.alert('Ocorreu um erro ao salvar seu nome. 😢')
+    }
+  }, [navigate, name])
 
   return (
     <SafeAreaContainer>
@@ -64,7 +76,7 @@ export const UserIdentification: React.FC = () => {
               />
 
               <View style={{ marginTop: 40 }}>
-              <Button text="Confirmar" disabled={!name} onPress={goToConfirmation} />
+              <Button text="Confirmar" enabled={!!name} onPress={goToConfirmation} />
               </View>
               
             </Form>

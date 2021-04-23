@@ -1,10 +1,11 @@
 import { Dimensions } from 'react-native'
+import { RectButton } from 'react-native-gesture-handler'
 import styled from 'styled-components/native'
 
 import colors from '../../styles/colors'
 import fonts from '../../styles/fonts'
 
-export const ButtonContainer = styled.TouchableOpacity`
+export const ButtonContainer = styled(RectButton)`
   background-color: ${colors.green};
   height: 56px;
   width: ${Dimensions.get('window').width - 144}px;

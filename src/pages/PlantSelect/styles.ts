@@ -1,5 +1,6 @@
 import { FlatList, StyleSheet } from 'react-native'
 import styled from 'styled-components/native'
+import { PlantProps } from '../../libs/storage'
 
 import colors from '../../styles/colors'
 import fonts from '../../styles/fonts'
@@ -7,19 +8,6 @@ import fonts from '../../styles/fonts'
 interface PlantEnvironments {
   key: string
   title: string
-}
-
-interface Plants {
-  id: number
-  name: string
-  about: string
-  water_tips: string
-  photo: string
-  environments: string[]
-  frequency: {
-    times: number
-    repeat_every: string
-  }
 }
 
 export const Container = styled.View`
@@ -55,7 +43,7 @@ export const PlantsListContainer = styled.View`
   justify-content: center;
 `
 
-export const PlantsList = styled(FlatList as new () => FlatList<Plants>)``
+export const PlantsList = styled(FlatList as new () => FlatList<PlantProps>)``
 
 export const flatContentStyles = StyleSheet.create({
   contentContainer: {
