@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Alert, Platform } from 'react-native'
 import { SvgFromUri } from 'react-native-svg'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import DateTimePicker, { Event } from '@react-native-community/datetimepicker'
 import { format, isBefore } from 'date-fns'
@@ -10,7 +10,16 @@ import { Remember } from '../../components/Remember'
 import { Button } from '../../components/Button'
 import { PlantProps, savePlant } from '../../libs/storage'
 
-import { ViewContainer, PlantDescription, PlantTitle, SelectAlarmText, TextButton, TextButtonDescription } from './styles'
+import { 
+  ScrollViewContainer,
+  ViewContainer,
+  PlantDescription,
+  PlantTitle,
+  SelectAlarmText,
+  TextButton,
+  TextButtonDescription,
+  contentScrollViewStyle
+} from './styles'
 
 export const PlantSave: React.FC = () => {
   const { navigate } = useNavigation()
@@ -66,35 +75,37 @@ export const PlantSave: React.FC = () => {
   }, [])
 
   return (
-    <ViewContainer>
-      <SvgFromUri uri={plant.photo} width={150} height={150} />
+    <ScrollViewContainer showsVerticalScrollIndicator={false} contentContainerStyle={contentScrollViewStyle.scrollView}>
+      <ViewContainer>
+        <SvgFromUri uri={plant.photo} width={150} height={150} />
 
-      <PlantTitle>{plant.name}</PlantTitle>
-      <PlantDescription>{plant.about}</PlantDescription>
+        <PlantTitle>{plant.name}</PlantTitle>
+        <PlantDescription>{plant.about}</PlantDescription>
 
-      <Remember tip={plant.water_tips} />
+        <Remember tip={plant.water_tips} />
 
-      <SelectAlarmText>Escolha o melhor horário para ser lembrado.</SelectAlarmText>
+        <SelectAlarmText>Escolha o melhor horário para ser lembrado.</SelectAlarmText>
 
-      {
-        Platform.OS === 'android' && (
-          <TextButton activeOpacity={0.7} onPress={changeShowDatePicker}>
-            <TextButtonDescription>Mudar Horário: {`${format(selectedDateTime, 'HH:mm')}`} </TextButtonDescription>
-          </TextButton>
-        )
-      }
+        {
+          Platform.OS === 'android' && (
+            <TextButton activeOpacity={0.7} onPress={changeShowDatePicker}>
+              <TextButtonDescription>Mudar Horário: {`${format(selectedDateTime, 'HH:mm')}`} </TextButtonDescription>
+            </TextButton>
+          )
+        }
 
-      {showDatePicker &&
-        <DateTimePicker 
-          value={selectedDateTime} 
-          mode="time" 
-          display="spinner" 
-          onChange={handleChangeTime}
-          onTouchCancel={setDatePickerFalse}
-        />
-      }
+        {showDatePicker &&
+          <DateTimePicker 
+            value={selectedDateTime} 
+            mode="time" 
+            display="spinner" 
+            onChange={handleChangeTime}
+            onTouchCancel={setDatePickerFalse}
+          />
+        }
 
-      <Button text="Cadastrar Planta" onPress={handleSave} />
-    </ViewContainer>
+        <Button text="Cadastrar Planta" onPress={handleSave} />
+      </ViewContainer>
+    </ScrollViewContainer>
   )
 }

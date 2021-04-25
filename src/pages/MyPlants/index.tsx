@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { format, formatDistance } from 'date-fns'
+import React, { useState, useEffect, useCallback } from 'react'
+import { Alert } from 'react-native'
+import { formatDistance } from 'date-fns'
 import { pt } from 'date-fns/locale'
 
 import { Header } from '../../components/Header'
 import { Remember } from '../../components/Remember'
-import { loadPlants, PlantProps } from '../../libs/storage'
+import { deletePlant, loadPlants, PlantProps } from '../../libs/storage'
+
+import { PlantCardSecondary } from '../../components/PlantCardSecondary'
+import { Load } from '../../components/Load'
 
 import { MyPlantsContainer, NextPlantsContainer, NextPlants, PlantsList } from './styles'
-import { PlantCardSecondary } from '../../components/PlantCardSecondary'
 
 export const MyPlants: React.FC = () => {
   const [myPlants, setMyPlants] = useState<PlantProps[]>([])
@@ -30,6 +33,30 @@ export const MyPlants: React.FC = () => {
     })()
   }, [nextWatered])
 
+  const handleRemove = useCallback((plant: PlantProps) => {
+    Alert.alert('Remover', `Deseja remover a ${plant.name}?`, [
+      {
+        text: 'Não 🙏🏽',
+        style: 'cancel',
+      },
+      {
+        text: 'Sim 😅',
+        onPress: async () => {
+          try {
+            await deletePlant(String(plant.id))
+
+            setMyPlants(oldData => oldData.filter(item => item.id !== plant.id))
+          } catch (error) {
+            Alert.alert('Não foi possível remover! 😢')
+          }
+        }
+      }
+    ])
+  }, [])
+
+  if (loading) {
+    return <Load />
+  }
   return (
     <MyPlantsContainer>
       <Header boldText="Plantinhas" regularText="Minhas" />
@@ -38,23 +65,24 @@ export const MyPlants: React.FC = () => {
 
       <NextPlantsContainer>
         <NextPlants>Próximas Regadas</NextPlants>
+
+        <PlantsList
+          data={myPlants}
+          keyExtractor={item => String(item.id)}
+          renderItem={({ item }) => (
+            <PlantCardSecondary 
+              data={{ 
+                name: item.name,
+                photo: item.photo,
+                hour: String(item.dateTimeNotification).split('T')[1].split('.')[0]
+              }}
+              handleRemove={() => handleRemove(item)}
+            />
+          )}
+          showsVerticalScrollIndicator={false}
+        />
       </NextPlantsContainer>
 
-      <PlantsList
-        data={myPlants}
-        keyExtractor={item => String(item.id)}
-        renderItem={({ item }) => (
-          <PlantCardSecondary 
-            data={{ 
-              name: item.name,
-              photo: item.photo,
-              hour: String(item.dateTimeNotification).split('T')[1].split('.')[0]
-            }}
-          />
-        )}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flex: 1 }}
-      />
     </MyPlantsContainer>
   )
 }

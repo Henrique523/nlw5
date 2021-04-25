@@ -50,3 +50,21 @@ export const HourBoldText = styled.Text`
   margin-top: 5px;
 `
 
+export const AnimatedRectButtonView = styled.View`
+  width: 100px;
+  height: 85px;
+  background-color: ${colors.red};
+  margin-top: 15px;
+  padding-left: 15px;
+  border-radius: 20px;
+
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+  right: 20px;
+`
+
+export const DeleteRectButton = styled(RectButton)`
+
+`

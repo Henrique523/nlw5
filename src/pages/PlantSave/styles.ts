@@ -1,13 +1,11 @@
-import { Dimensions } from 'react-native'
+import { Dimensions, StyleSheet } from 'react-native'
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
 import styled from 'styled-components/native'
 
 import colors from '../../styles/colors'
 import fonts from '../../styles/fonts'
 
-export const ScrollViewContainer = styled.ScrollView`
-  flex: 1;
-`
+export const ScrollViewContainer = styled.ScrollView``
 
 export const ViewContainer = styled.View`
   background-color: ${colors.shape};
@@ -53,3 +51,10 @@ export const TextButtonDescription = styled.Text`
   color: ${colors.green};
   line-height: 23px;
 `
+export const contentScrollViewStyle = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+    backgroundColor: colors.shape,
+    justifyContent: 'space-between',
+  }
+})

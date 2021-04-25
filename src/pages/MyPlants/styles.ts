@@ -15,6 +15,7 @@ export const MyPlantsContainer = styled.View`
 `
 
 export const NextPlantsContainer = styled.View`
+  flex: 1;
   width: 100%;
 `
 
@@ -25,9 +26,7 @@ export const NextPlants = styled.Text`
   color: ${colors.heading};
 
   text-align: left;
+  margin: 16px 0;
 `
 
-export const PlantsList = styled(FlatList as new () => FlatList<PlantProps>)`
-  margin-top: 16px;
-  width: 100%;
-`
+export const PlantsList = styled(FlatList as new () => FlatList<PlantProps>)``
